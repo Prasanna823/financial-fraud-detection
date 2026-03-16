@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Fraud Detection System</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<h2>Financial Transaction Fraud Detection</h2>
+
+<form action="/predict" method="post">
+
+<label>Time</label>
+<input type="number" name="f1" required>
+
+<label>Amount</label>
+<input type="number" name="f2" required>
+
+<label>Transaction Frequency</label>
+<input type="number" name="f3" required>
+
+<label>Device/Login Pattern</label>
+<select name="f4">
+<option value="0">Mobile</option>
+<option value="1">Laptop</option>
+<option value="2">Desktop</option>
+<option value="3">Unknown Device</option>
+</select>
+
+<label>Spending Deviation</label>
+<input type="number" name="f5" required>
+
+<label>Location Pattern</label>
+<select name="f6">
+<option value="0">Home</option>
+<option value="1">Known</option>
+<option value="2">New</option>
+<option value="3">International</option>
+</select>
+
+<label>Account Activity</label>
+<select name="f7">
+<option value="0">Normal</option>
+<option value="1">High</option>
+<option value="2">Unusual</option>
+</select>
+
+<label>Payment Method</label>
+<select name="f8">
+<option value="0">Card</option>
+<option value="1">Cash</option>
+<option value="2">Online</option>
+<option value="3">UPI</option>
+<option value="4">Wallet</option>
+</select>
+
+<label>Merchant Interaction</label>
+<input type="number" name="f9" required>
+
+<label>Risk Score</label>
+<input type="number" name="f10" required>
+
+<br><br>
+
+<button type="submit">Predict Fraud</button>
+
+</form>
+
+<h3>{{ prediction_text }}</h3>
+
+</body>
+
+</html>
