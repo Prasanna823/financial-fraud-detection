@@ -1,37 +1,43 @@
 from flask import Flask, render_template, request
 import numpy as np
 import joblib
+import pandas as pd
 
 app = Flask(__name__)
 
-model = joblib.load(open("models/random_forest_model.pkl","rb"))
+# Load trained model
+model = joblib.load("models/random_forest_model.pkl")
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-@app.route("/predict",methods=["POST"])
+
+@app.route("/predict", methods=["POST"])
 def predict():
 
-    import pandas as pd
+    # Get form values
+    features = [float(x) for x in request.form.values()]
 
-features = [float(x) for x in request.form.values()]
+    # Feature names used during training
+    feature_names = [
+        "Time", "Amount", "V1", "V2", "V3",
+        "V4", "V5", "V6", "V7", "V8"
+    ]
 
-feature_names = [
-"Time","Amount","V1","V2","V3",
-"V4","V5","V6","V7","V8"
-]
+    # Convert input to dataframe
+    features_df = pd.DataFrame([features], columns=feature_names)
 
-features_df = pd.DataFrame([features], columns=feature_names)
+    # Prediction
+    prediction = model.predict(features_df)
 
-prediction = model.predict(features_df)
-
-    if prediction[0]==1:
-        result="⚠ Fraudulent Transaction"
+    if prediction[0] == 1:
+        result = "⚠ Fraudulent Transaction"
     else:
-        result="✅ Legitimate Transaction"
+        result = "✅ Legitimate Transaction"
 
-    return render_template("index.html",prediction_text=result)
+    return render_template("index.html", prediction_text=result)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     app.run(debug=True)
